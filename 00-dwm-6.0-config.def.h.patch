@@ -35,7 +35,7 @@
 +	{ "Conkeror",  "Download",  NULL,       1 << 1,	      True,	   -1 },	
 +	{ "Conkeror",  "Addons",    NULL,       1 << 1,	      True,	   -1 },
 +	{ "Conkeror",  "Navigator", NULL,       1 << 1,	      False,	   -1 },
-+	{ "Gimp",      "gimp",	    NULL,	1 << 2,	      True,	   -1 },
++	{ "Gimp",      "gimp",	    NULL,	1 << 2,	      False,	   -1 },
 +	{ NULL,	       "VCLSalFrame", NULL, 	1 << 2,	      False,   	   -1 },
 +	{ NULL,	       "VCLSalFrame.DocumentWindow", NULL, 1 << 2, False,  -1 },
  };
@@ -55,7 +55,7 @@
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -47,19 +55,33 @@
+@@ -47,19 +55,41 @@
  
  /* commands */
  static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
@@ -64,6 +64,10 @@
 +static const char *kbdup[]    = { "asus-kbd-backlight", "up", NULL };
 +static const char *kbddown[]  = { "asus-kbd-backlight", "down", NULL };
 +static const char *display[]  = { "toggle-display", NULL };
++static const char *touchpad[] = { "toggle-touchpad", NULL };
++static const char *vwebcam[]  = { "xterm", "-e", "webcam", NULL };
++static const char *pwebcam[]  = { "webcam", "-r", "1", NULL };
++static const char *swebcam[]  = { "webcam", "-r", "0", NULL };
 +static const char *printscrn[]= { "screenshot", "-m", "root", "-f", "desktop", NULL };
 +static const char *printwin[] = { "screenshot", "-m", "window", "-f", "window", NULL };
 +static const char *emacscmd[] = { "emacsclient", "-a=", "-c", NULL };
@@ -79,6 +83,10 @@
 +	{ 0,             		0x1008ff05, spawn,          {.v = kbdup } },
 +	{ 0,             		0x1008ff06, spawn,          {.v = kbddown } },
 +	{ 0,             		0x1008ff59, spawn,          {.v = display } },
++	{ 0,				0x1008ffa9, spawn,	    {.v = touchpad } },
++	{ 0,				0x1008ff8f, spawn,	    {.v = vwebcam } },
++	{ Mod1Mask,			0x1008ff8f, spawn,	    {.v = pwebcam } },
++	{ MODKEY,			0x1008ff8f, spawn,	    {.v = swebcam } },
 +	{ 0,				XK_Print,  spawn,	   {.v = printscrn } },
 +	{ Mod1Mask,			XK_Print,  spawn,	   {.v = printwin } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
