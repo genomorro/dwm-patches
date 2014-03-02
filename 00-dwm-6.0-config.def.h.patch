@@ -63,7 +63,7 @@
 +static const char *termcmd[]  = { "xterm", NULL };
 +static const char *kbdup[]    = { "asus-kbd-backlight", "up", NULL };
 +static const char *kbddown[]  = { "asus-kbd-backlight", "down", NULL };
-+static const char *display[]  = { "toggle-display", NULL };
++static const char *display[] = { "toggle-display", NULL };
 +static const char *touchpad[] = { "toggle-touchpad", NULL };
 +static const char *vwebcam[]  = { "xterm", "-e", "webcam", NULL };
 +static const char *pwebcam[]  = { "webcam", "-r", "1", NULL };
@@ -82,7 +82,7 @@
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 +	{ 0,             		0x1008ff05, spawn,          {.v = kbdup } },
 +	{ 0,             		0x1008ff06, spawn,          {.v = kbddown } },
-+	{ 0,             		0x1008ff59, spawn,          {.v = display } },
++       { 0,                 		0x1008ff59, spawn, 	    {.v = display } },
 +	{ 0,				0x1008ffa9, spawn,	    {.v = touchpad } },
 +	{ 0,				0x1008ff8f, spawn,	    {.v = vwebcam } },
 +	{ Mod1Mask,			0x1008ff8f, spawn,	    {.v = pwebcam } },
@@ -101,7 +101,7 @@
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-@@ -77,12 +99,6 @@
+@@ -77,12 +99,7 @@
  	TAGKEYS(                        XK_1,                      0)
  	TAGKEYS(                        XK_2,                      1)
  	TAGKEYS(                        XK_3,                      2)
@@ -111,6 +111,7 @@
 -	TAGKEYS(                        XK_7,                      6)
 -	TAGKEYS(                        XK_8,                      7)
 -	TAGKEYS(                        XK_9,                      8)
++ 	{ MODKEY,			XK_q,	   quit,	   {1} },
  	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
  };
  
