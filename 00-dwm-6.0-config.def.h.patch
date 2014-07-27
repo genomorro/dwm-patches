@@ -1,6 +1,6 @@
 --- a/config.def.h	2013-06-30 18:20:44.000000000 -0500
 +++ b/config.def.h	2014-05-06 00:08:48.897920419 -0500
-@@ -2,28 +2,39 @@
+@@ -2,28 +2,37 @@
  
  /* appearance */
  static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
@@ -17,10 +17,8 @@
 +static const char selbordercolor[]  = "#666666";
 +static const char selbgcolor[]      = "#3f3f3f";
 +static const char selfgcolor[]      = "#f0dfaf";
-+static const unsigned int borderpx  = 5;        /* border pixel of windows */
++static const unsigned int borderpx  = 3;        /* border pixel of windows */
  static const unsigned int snap      = 32;       /* snap pixel */
-+static const unsigned int systrayspacing = 2;   /* systray spacing */
-+static const Bool showsystray       = True;     /* False means no systray */
  static const Bool showbar           = True;     /* False means no bar */
  static const Bool topbar            = True;     /* False means bottom bar */
  
@@ -34,14 +32,14 @@
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
 +	/* class      instance      title       tags mask     isfloating   monitor */
 +	{ "Display",   NULL,	    NULL,	0,   	      True,	   -1 },
-+	{ "MPlayer",   NULL,	    NULL,	0,   	      True,	   -1 },
-+	{ "Volwheel",  NULL,	    NULL,	0,	      True,	   -1 },
++	{ "ffplay",    "ffplay",    NULL,	0,   	      True,	   -1 },
++	{ "Xmessage",  NULL,	    NULL,	0,	      True,	   -1 },
 +	{ "Emacs",     NULL,        NULL,       1,            False,       -1 },
 +	{ "Firefox",   NULL,        NULL,       1 << 1,       False,       -1 },
 +	{ "Conkeror",  "Download",  NULL,       1 << 1,	      True,	   -1 },	
 +	{ "Conkeror",  "Addons",    NULL,       1 << 1,	      True,	   -1 },
 +	{ "Conkeror",  "Navigator", NULL,       1 << 1,	      False,	   -1 },
-+	{ "Gimp",      "gimp",	    NULL,	1 << 2,	      False,	   -1 },
++	{ "Vlc",       "vlc",	    NULL,	1 << 2,	      False,	   -1 },
 +	{ NULL,	       "VCLSalFrame", NULL, 	1 << 2,	      False,   	   -1 },
 +	{ NULL,	       "VCLSalFrame.DocumentWindow", NULL, 1 << 2, False,  -1 },
  };
@@ -66,12 +64,12 @@
  /* commands */
  static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 -static const char *termcmd[]  = { "uxterm", NULL };
-+static const char *termcmd[]  = { "xterm", NULL };
++static const char *termcmd[]  = { "st", NULL };
 +static const char *kbdup[]    = { "asus-kbd-backlight", "up", NULL };
 +static const char *kbddown[]  = { "asus-kbd-backlight", "down", NULL };
 +static const char *display[] = { "toggle-display", NULL };
 +static const char *touchpad[] = { "toggle-touchpad", NULL };
-+static const char *vwebcam[]  = { "xterm", "-e", "webcam", NULL };
++static const char *vwebcam[]  = { "st", "-e", "webcam", NULL };
 +static const char *pwebcam[]  = { "webcam", "-r", "1", NULL };
 +static const char *swebcam[]  = { "webcam", "-r", "0", NULL };
 +static const char *printscrn[]= { "screenshot", "-m", "root", "-f", "desktop", NULL };
