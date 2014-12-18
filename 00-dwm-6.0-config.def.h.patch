@@ -1,6 +1,6 @@
 --- a/config.def.h	2013-06-30 18:20:44.000000000 -0500
-+++ b/config.def.h	2014-05-06 00:08:48.897920419 -0500
-@@ -2,28 +2,37 @@
++++ b/config.def.h	2014-12-18 15:26:33.879146415 -0600
+@@ -2,28 +2,38 @@
  
  /* appearance */
  static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
@@ -13,8 +13,8 @@
 -static const unsigned int borderpx  = 1;        /* border pixel of windows */
 +static const char normbordercolor[] = "#2b2b2b";
 +static const char normbgcolor[]     = "#2b2b2b";
-+static const char normfgcolor[]     = "#8fb28f";
-+static const char selbordercolor[]  = "#666666";
++static const char normfgcolor[]     = "#7f9f7f";
++static const char selbordercolor[]  = "#f0dfaf";
 +static const char selbgcolor[]      = "#3f3f3f";
 +static const char selfgcolor[]      = "#f0dfaf";
 +static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -24,7 +24,7 @@
  
  /* tagging */
 -static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-+static const char *tags[] = { "e", "w", "o" };
++static const char *tags[] = { "m", "e", "w", "o" };
  
  static const Rule rules[] = {
 -	/* class      instance    title       tags mask     isfloating   monitor */
@@ -34,14 +34,15 @@
 +	{ "Display",   NULL,	    NULL,	0,   	      True,	   -1 },
 +	{ "ffplay",    "ffplay",    NULL,	0,   	      True,	   -1 },
 +	{ "Xmessage",  NULL,	    NULL,	0,	      True,	   -1 },
-+	{ "Emacs",     NULL,        NULL,       1,            False,       -1 },
-+	{ "Firefox",   NULL,        NULL,       1 << 1,       False,       -1 },
-+	{ "Conkeror",  "Download",  NULL,       1 << 1,	      True,	   -1 },	
-+	{ "Conkeror",  "Addons",    NULL,       1 << 1,	      True,	   -1 },
-+	{ "Conkeror",  "Navigator", NULL,       1 << 1,	      False,	   -1 },
-+	{ "Vlc",       "vlc",	    NULL,	1 << 2,	      False,	   -1 },
-+	{ NULL,	       "VCLSalFrame", NULL, 	1 << 2,	      False,   	   -1 },
-+	{ NULL,	       "VCLSalFrame.DocumentWindow", NULL, 1 << 2, False,  -1 },
++	{ "Emacs",     NULL,        NULL,       1 << 1,       False,       -1 },
++	{ "Firefox",   "Browser",   NULL,       1 << 2,       True,        -1 },
++	{ "Firefox",   "Navigator", NULL,       1 << 2,       False,       -1 },
++	{ "Conkeror",  "Download",  NULL,       1 << 2,	      True,	   -1 },	
++	{ "Conkeror",  "Addons",    NULL,       1 << 2,	      True,	   -1 },
++	{ "Conkeror",  "Navigator", NULL,       1 << 2,	      False,	   -1 },
++	{ "Vlc",       "vlc",	    NULL,	0,	      True,	   -1 },
++	{ "Soffice",   "libreoffice", NULL, 	1 << 3,	      True,   	   -1 },
++	{ NULL,	       "libreoffice", NULL, 	1 << 3,	      False,   	   -1 },
  };
  
  /* layout(s) */
@@ -50,7 +51,7 @@
  static const int nmaster      = 1;    /* number of clients in master area */
  static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
  
-@@ -35,7 +46,7 @@
+@@ -35,7 +45,7 @@
  };
  
  /* key definitions */
@@ -59,7 +60,7 @@
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -47,19 +58,41 @@
+@@ -47,19 +57,41 @@
  
  /* commands */
  static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
@@ -105,16 +106,23 @@
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-@@ -77,12 +110,7 @@
- 	TAGKEYS(                        XK_1,                      0)
- 	TAGKEYS(                        XK_2,                      1)
- 	TAGKEYS(                        XK_3,                      2)
+@@ -74,15 +106,11 @@
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+-	TAGKEYS(                        XK_1,                      0)
+-	TAGKEYS(                        XK_2,                      1)
+-	TAGKEYS(                        XK_3,                      2)
 -	TAGKEYS(                        XK_4,                      3)
 -	TAGKEYS(                        XK_5,                      4)
 -	TAGKEYS(                        XK_6,                      5)
 -	TAGKEYS(                        XK_7,                      6)
 -	TAGKEYS(                        XK_8,                      7)
 -	TAGKEYS(                        XK_9,                      8)
++	TAGKEYS(                        XK_0,                      0)
++	TAGKEYS(                        XK_1,                      1)
++	TAGKEYS(                        XK_2,                      2)
++	TAGKEYS(			XK_3,			   3)
 + 	{ MODKEY,			XK_q,	   quit,	   {1} },
  	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
  };
