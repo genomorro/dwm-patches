@@ -1,6 +1,6 @@
 --- a/config.def.h	2013-06-30 18:20:44.000000000 -0500
 +++ b/config.def.h	2014-12-18 15:26:33.879146415 -0600
-@@ -2,28 +2,38 @@
+@@ -2,28 +2,39 @@
  
  /* appearance */
  static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
@@ -31,6 +31,7 @@
 -	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
 +	/* class      instance      title       tags mask     isfloating   monitor */
++	{ "Animate",   "animate",   NULL,	0,   	      True,	   -1 },
 +	{ "Display",   NULL,	    NULL,	0,   	      True,	   -1 },
 +	{ "ffplay",    "ffplay",    NULL,	0,   	      True,	   -1 },
 +	{ "Xmessage",  NULL,	    NULL,	0,	      True,	   -1 },
