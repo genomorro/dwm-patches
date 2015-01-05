@@ -9,3 +9,4 @@ DWM patches
 - Save position of float windows
 - Pertag
 - Restart with MODKEY+q
+- Columns provides for vertical master windows
