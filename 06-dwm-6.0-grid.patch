@@ -1,0 +1,60 @@
+diff -r 62791cc97f88 config.def.h
+--- a/config.def.h	Tue Jun 01 17:39:26 2010 +0100
++++ b/config.def.h	Wed Jun 02 13:42:49 2010 +0100
+@@ -29,1 +29,2 @@
++#include "grid.c"
+ static const Layout layouts[] = {
+@@ -34,3 +35,4 @@
++	{ "HHH",      grid },
+ };
+ 
+ /* key definitions */
+@@ -66,6 +67,7 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+ 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
++	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
+ 	{ MODKEY,                       XK_space,  setlayout,      {0} },
+ 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+ 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+diff -r 62791cc97f88 grid.c
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/grid.c	Wed Jun 02 13:42:49 2010 +0100
+@@ -0,0 +1,36 @@
++void
++grid(Monitor *m) {
++	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
++	Client *c;
++
++	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next))
++		n++;
++	if(n == 0)
++		return;
++
++	/* grid dimensions */
++	for(cols = 0; cols <= n/2; cols++)
++		if(cols*cols >= n)
++			break;
++	if(n == 5) /* set layout against the general calculation: not 1:2:2, but 2:3 */
++		cols = 2;
++	rows = n/cols;
++
++	/* window geometries */
++	cw = cols ? m->ww / cols : m->ww;
++	cn = 0; /* current column number */
++	rn = 0; /* current row number */
++	for(i = 0, c = nexttiled(m->clients); c; i++, c = nexttiled(c->next)) {
++		if(i/rows + 1 > cols - n%cols)
++			rows = n/cols + 1;
++		ch = rows ? m->wh / rows : m->wh;
++		cx = m->wx + cn*cw;
++		cy = m->wy + rn*ch;
++		resize(c, cx, cy, cw - 2 * c->bw, ch - 2 * c->bw, False);
++		rn++;
++		if(rn >= rows) {
++			rn = 0;
++			cn++;
++		}
++	}
++}
++ 
