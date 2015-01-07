@@ -1,0 +1,57 @@
+diff -r 62791cc97f88 config.def.h
+--- a/config.def.h	Tue Jun 01 17:39:26 2010 +0100
++++ b/config.def.h	Wed Jun 02 13:42:49 2010 +0100
+@@ -29,1 +29,2 @@
++#include "bstack.c"
+ static const Layout layouts[] = {
+@@ -34,3 +35,4 @@
++	{ "TTT",      bstack },
+ };
+ 
+ /* key definitions */
+@@ -66,6 +67,7 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_l,      setlayout,      {.v = &layouts[4]} },
++	{ MODKEY,                       XK_s,      setlayout,      {.v = &layouts[5]} },
+ 	{ MODKEY,                       XK_space,  setlayout,      {0} },
+ 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+ 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+diff -r ec4baab78314 bstack.c
+--- /dev/null	Thu Jan 01 00:00:00 1970 +0000
++++ b/bstack.c	Tue Feb 28 11:28:54 2012 -0500
+@@ -0,0 +1,33 @@
++static void
++bstack(Monitor *m) {
++	int w, h, mh, mx, tx, ty, tw;
++	unsigned int i, n;
++	Client *c;
++
++	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	if(n == 0)
++		return;
++	if(n > m->nmaster) {
++		mh = m->nmaster ? m->mfact * m->wh : 0;
++		tw = m->ww / (n - m->nmaster);
++		ty = m->wy + mh;
++	} 
++	else {
++		mh = m->wh;
++		tw = m->ww;
++		ty = m->wy;
++	}
++	for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
++		if(i < m->nmaster) {
++			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
++			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
++			mx += WIDTH(c);
++		} 
++		else {
++			h = m->wh - mh;
++			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), False);
++			if(tw != m->ww)
++				tx += WIDTH(c);
++		}
++	}
++}
++
