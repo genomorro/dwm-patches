@@ -3,21 +3,20 @@ URL: http://dwm.suckless.org/patches/systray
 Implements a system tray for dwm.
 
 diff -r ec4baab78314 config.def.h
---- a/config.def.h Mon Dec 19 15:38:30 2011 +0100
-+++ b/config.def.h Fri Apr 06 08:25:40 2012 +0200
+--- a/config.def.h   2015-01-30 18:20:48.594757101 -0600
++++ b/config.def.h   2015-01-30 18:31:54.499781970 -0600
 @@ -10,6 +10,8 @@
  static const char selfgcolor[]      = "#f0dfaf";
- static const unsigned int borderpx  = 5;        /* border pixel of windows */
+ static const unsigned int borderpx  = 3;        /* border pixel of windows */
  static const unsigned int snap      = 32;       /* snap pixel */
 +static const unsigned int systrayspacing = 2;   /* systray spacing */
 +static const Bool showsystray       = True;     /* False means no systray */
  static const Bool showbar           = True;     /* False means no bar */
  static const Bool topbar            = True;     /* False means bottom bar */
 
-diff -r ec4baab78314 dwm.c
---- a/dwm.c	Mon Dec 19 15:38:30 2011 +0100
-+++ b/dwm.c	Fri Apr 06 08:25:40 2012 +0200
-@@ -55,12 +55,30 @@
+--- a/dwm.c	2015-01-30 19:10:12.154867779 -0600
++++ b/dwm.c	2015-01-30 19:10:20.263868082 -0600
+@@ -56,12 +56,30 @@
  #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
  #define TEXTW(X)                (textnw(X, strlen(X)) + dc.font.height)
  
@@ -51,7 +50,7 @@ diff -r ec4baab78314 dwm.c
  enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
  enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
         ClkClientWin, ClkRootWin, ClkLast };             /* clicks */
-@@ -154,6 +172,12 @@
+@@ -155,6 +173,12 @@
  	int monitor;
  } Rule;
  
@@ -64,7 +63,7 @@ diff -r ec4baab78314 dwm.c
  /* function declarations */
  static void applyrules(Client *c);
  static Bool applysizehints(Client *c, int *x, int *y, int *w, int *h, Bool interact);
-@@ -186,9 +210,11 @@
+@@ -187,9 +211,11 @@
  static void focusin(XEvent *e);
  static void focusmon(const Arg *arg);
  static void focusstack(const Arg *arg);
@@ -76,7 +75,7 @@ diff -r ec4baab78314 dwm.c
  static Bool gettextprop(Window w, Atom atom, char *text, unsigned int size);
  static void grabbuttons(Client *c, Bool focused);
  static void grabkeys(void);
-@@ -207,13 +233,16 @@
+@@ -208,13 +234,16 @@
  static void propertynotify(XEvent *e);
  static void quit(const Arg *arg);
  static Monitor *recttomon(int x, int y, int w, int h);
@@ -94,7 +93,7 @@ diff -r ec4baab78314 dwm.c
  static void sendmon(Client *c, Monitor *m);
  static void setclientstate(Client *c, long state);
  static void setfocus(Client *c);
-@@ -241,18 +270,24 @@
+@@ -242,18 +271,24 @@
  static void updatenumlockmask(void);
  static void updatesizehints(Client *c);
  static void updatestatus(void);
@@ -119,7 +118,7 @@ diff -r ec4baab78314 dwm.c
  static const char broken[] = "broken";
  static char stext[256];
  static int screen;
-@@ -274,9 +309,10 @@
+@@ -275,9 +310,10 @@
  	[MapRequest] = maprequest,
  	[MotionNotify] = motionnotify,
  	[PropertyNotify] = propertynotify,
@@ -131,7 +130,7 @@ diff -r ec4baab78314 dwm.c
  static Bool running = True;
  static Cursor cursor[CurLast];
  static Display *dpy;
-@@ -497,6 +533,11 @@
+@@ -498,6 +534,11 @@
  	XFreeCursor(dpy, cursor[CurMove]);
  	while(mons)
  		cleanupmon(mons);
@@ -143,7 +142,7 @@ diff -r ec4baab78314 dwm.c
  	XSync(dpy, False);
  	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
  }
-@@ -530,9 +572,49 @@
+@@ -531,9 +572,49 @@
  
  void
  clientmessage(XEvent *e) {
@@ -193,7 +192,7 @@ diff -r ec4baab78314 dwm.c
  	if(!c)
  		return;
  	if(cme->message_type == netatom[NetWMState]) {
-@@ -583,7 +663,7 @@
+@@ -584,7 +665,7 @@
  			dc.drawable = XCreatePixmap(dpy, root, sw, bh, DefaultDepth(dpy, screen));
  			updatebars();
  			for(m = mons; m; m = m->next)
@@ -202,7 +201,7 @@ diff -r ec4baab78314 dwm.c
  			focus(NULL);
  			arrange(NULL);
  		}
-@@ -667,6 +747,11 @@
+@@ -668,6 +749,11 @@
  
  	if((c = wintoclient(ev->window)))
  		unmanage(c, True);
@@ -214,7 +213,7 @@ diff -r ec4baab78314 dwm.c
  }
  
  void
-@@ -722,6 +807,7 @@
+@@ -723,6 +809,7 @@
  	unsigned long *col;
  	Client *c;
  
@@ -222,7 +221,7 @@ diff -r ec4baab78314 dwm.c
  	for(c = m->clients; c; c = c->next) {
  		occ |= c->tags;
  		if(c->isurgent)
-@@ -743,6 +829,9 @@
+@@ -744,6 +831,9 @@
  	if(m == selmon) { /* status is only drawn on selected monitor */
  		dc.w = TEXTW(stext);
  		dc.x = m->ww - dc.w;
@@ -232,7 +231,7 @@ diff -r ec4baab78314 dwm.c
  		if(dc.x < x) {
  			dc.x = x;
  			dc.w = m->ww - x;
-@@ -771,6 +860,7 @@
+@@ -772,6 +862,7 @@
  
  	for(m = mons; m; m = m->next)
  		drawbar(m);
@@ -240,7 +239,7 @@ diff -r ec4baab78314 dwm.c
  }
  
  void
-@@ -917,10 +1007,17 @@
+@@ -918,10 +1009,17 @@
  	unsigned long dl;
  	unsigned char *p = NULL;
  	Atom da, atom = None;
@@ -259,7 +258,7 @@ diff -r ec4baab78314 dwm.c
  		XFree(p);
  	}
  	return atom;
-@@ -962,6 +1059,15 @@
+@@ -963,6 +1061,15 @@
  	return result;
  }
  
@@ -275,7 +274,7 @@ diff -r ec4baab78314 dwm.c
  Bool
  gettextprop(Window w, Atom atom, char *text, unsigned int size) {
  	char **list = NULL;
-@@ -1096,7 +1202,7 @@
+@@ -1097,7 +1204,7 @@
  killclient(const Arg *arg) {
  	if(!selmon->sel)
  		return;
@@ -284,7 +283,7 @@ diff -r ec4baab78314 dwm.c
  		XGrabServer(dpy);
  		XSetErrorHandler(xerrordummy);
  		XSetCloseDownMode(dpy, DestroyAll);
-@@ -1180,6 +1286,12 @@
+@@ -1181,6 +1288,12 @@
  maprequest(XEvent *e) {
  	static XWindowAttributes wa;
  	XMapRequestEvent *ev = &e->xmaprequest;
@@ -297,7 +296,7 @@ diff -r ec4baab78314 dwm.c
  
  	if(!XGetWindowAttributes(dpy, ev->window, &wa))
  		return;
-@@ -1293,6 +1405,16 @@
+@@ -1303,6 +1416,16 @@
  	Window trans;
  	XPropertyEvent *ev = &e->xproperty;
  
@@ -314,7 +313,7 @@ diff -r ec4baab78314 dwm.c
  	if((ev->window == root) && (ev->atom == XA_WM_NAME))
  		updatestatus();
  	else if(ev->state == PropertyDelete)
-@@ -1342,12 +1464,33 @@
+@@ -1352,12 +1475,33 @@
  }
  
  void
@@ -348,7 +347,7 @@ diff -r ec4baab78314 dwm.c
  resizeclient(Client *c, int x, int y, int w, int h) {
  	XWindowChanges wc;
  
-@@ -1412,6 +1555,18 @@
+@@ -1422,6 +1566,18 @@
  }
  
  void
@@ -367,7 +366,7 @@ diff -r ec4baab78314 dwm.c
  restack(Monitor *m) {
  	Client *c;
  	XEvent ev;
-@@ -1495,25 +1650,35 @@
+@@ -1505,25 +1661,35 @@
  }
  
  Bool
@@ -414,7 +413,7 @@ diff -r ec4baab78314 dwm.c
  	}
  	return exists;
  }
-@@ -1522,7 +1687,7 @@
+@@ -1532,7 +1698,7 @@
  setfocus(Client *c) {
  	if(!c->neverfocus)
  		XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
@@ -423,7 +422,7 @@ diff -r ec4baab78314 dwm.c
  }
  
  void
-@@ -1602,11 +1767,17 @@
+@@ -1612,11 +1778,17 @@
  	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", False);
  	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
  	netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
@@ -441,7 +440,7 @@ diff -r ec4baab78314 dwm.c
  	/* init cursors */
  	cursor[CurNormal] = XCreateFontCursor(dpy, XC_left_ptr);
  	cursor[CurResize] = XCreateFontCursor(dpy, XC_sizing);
-@@ -1623,6 +1794,8 @@
+@@ -1633,6 +1805,8 @@
  	XSetLineAttributes(dpy, dc.gc, 1, LineSolid, CapButt, JoinMiter);
  	if(!dc.font.set)
  		XSetFont(dpy, dc.gc, dc.font.xfont->fid);
@@ -450,7 +449,7 @@ diff -r ec4baab78314 dwm.c
  	/* init bars */
  	updatebars();
  	updatestatus();
-@@ -1731,7 +1904,18 @@
+@@ -1760,7 +1934,18 @@
  togglebar(const Arg *arg) {
  	selmon->showbar = !selmon->showbar;
  	updatebarpos(selmon);
@@ -470,7 +469,7 @@ diff -r ec4baab78314 dwm.c
  	arrange(selmon);
  }
  
-@@ -1816,18 +2000,28 @@
+@@ -1851,18 +2036,28 @@
  		else
  			unmanage(c, False);
  	}
@@ -500,7 +499,7 @@ diff -r ec4baab78314 dwm.c
  		                          CopyFromParent, DefaultVisual(dpy, screen),
  		                          CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]);
-@@ -2011,6 +2208,107 @@
+@@ -2046,6 +2241,107 @@
  }
  
  void
@@ -608,7 +607,7 @@ diff -r ec4baab78314 dwm.c
  updatewindowtype(Client *c) {
  	Atom state = getatomprop(c, netatom[NetWMState]);
  	Atom wtype = getatomprop(c, netatom[NetWMWindowType]);
-@@ -2080,6 +2372,16 @@
+@@ -2115,6 +2411,16 @@
  	return selmon;
  }
  

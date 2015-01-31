@@ -20,7 +20,7 @@ diff -r 62791cc97f88 config.def.h
 diff -r ec4baab78314 bstack.c
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
 +++ b/bstack.c	Tue Feb 28 11:28:54 2012 -0500
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,34 @@
 +static void
 +bstack(Monitor *m) {
 +	int w, h, mh, mx, tx, ty, tw;

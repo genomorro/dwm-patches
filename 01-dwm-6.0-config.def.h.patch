@@ -1,9 +1,10 @@
---- a/config.def.h	2015-01-07 18:40:06.236472728 -0600
-+++ b/config.def.h	2015-01-07 18:41:13.078475225 -0600
-@@ -2,30 +2,41 @@
+--- a/config.def.h	2015-01-30 18:16:06.243746556 -0600
++++ b/config.def.h	2015-01-30 18:17:11.613748997 -0600
+@@ -1,31 +1,42 @@
+ /* See LICENSE file for copyright and license details. */
  
  /* appearance */
- static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
+-static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
 -static const char normbordercolor[] = "#444444";
 -static const char normbgcolor[]     = "#222222";
 -static const char normfgcolor[]     = "#bbbbbb";
@@ -11,6 +12,7 @@
 -static const char selbgcolor[]      = "#005577";
 -static const char selfgcolor[]      = "#eeeeee";
 -static const unsigned int borderpx  = 1;        /* border pixel of windows */
++static const char font[]            = "Terminus:pixelsize=14:antialias=false:autohint=false";
 +static const char normbordercolor[] = "#2b2b2b";
 +static const char normbgcolor[]     = "#2b2b2b";
 +static const char normfgcolor[]     = "#7f9f7f";
