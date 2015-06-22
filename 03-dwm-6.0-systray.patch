@@ -5,7 +5,7 @@ Implements a system tray for dwm.
 diff -r ec4baab78314 config.def.h
 --- a/config.def.h   2015-01-30 18:20:48.594757101 -0600
 +++ b/config.def.h   2015-01-30 18:31:54.499781970 -0600
-@@ -10,6 +10,8 @@
+@@ -10,5 +10,7 @@
  static const char selfgcolor[]      = "#f0dfaf";
  static const unsigned int borderpx  = 3;        /* border pixel of windows */
  static const unsigned int snap      = 32;       /* snap pixel */
