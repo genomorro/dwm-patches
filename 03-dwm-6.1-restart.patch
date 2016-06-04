@@ -1,0 +1,28 @@
+--- dwm-6.1_stable/dwm.c	2016-06-03 16:45:30.537139774 -0500
++++ dwm-6.1/dwm.c	2016-06-03 16:49:06.737145564 -0500
+@@ -260,6 +260,7 @@
+ };
+ static Atom wmatom[WMLast], netatom[NetLast];
+ static int running = 1;
++static int restart = 0;
+ static Cur *cursor[CurLast];
+ static ClrScheme scheme[SchemeLast];
+ static Display *dpy;
+@@ -1279,6 +1280,8 @@
+ void
+ quit(const Arg *arg)
+ {
++	if(arg->i)
++		restart = 1;
+ 	running = 0;
+ }
+ 
+@@ -2174,6 +2177,8 @@
+ 	setup();
+ 	scan();
+ 	run();
++	if(restart)
++		execvp(argv[0],argv);
+ 	cleanup();
+ 	XCloseDisplay(dpy);
+ 	return EXIT_SUCCESS;
