@@ -1,14 +1,21 @@
---- a/config.def.h	Tue Jun 01 17:39:26 2010 +0100
-+++ b/config.def.h	Wed Jun 02 13:42:49 2010 +0100
-@@ -29,1 +29,2 @@
+--- dwm-6.1_06/config.def.h	2016-06-10 21:41:31.506206117 -0500
++++ dwm-6.1/config.def.h	2016-06-10 21:41:49.936207195 -0500
+@@ -52,12 +52,14 @@
+ static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+ 
+ #include "grid.c"
 +#include "deck.c"
  static const Layout layouts[] = {
-@@ -34,3 +35,4 @@
+ 	/* symbol     arrange function */
+ 	{ "[]=",      tile },    /* first entry is default */
+ 	{ "><>",      NULL },    /* no layout function means floating behavior */
+ 	{ "[M]",      monocle },
+ 	{ "HHH",      grid },
 +	{ "[]|",      deck },
  };
  
  /* key definitions */
-@@ -106,6 +106,7 @@ static Key keys[] = {
+@@ -116,6 +118,7 @@
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
  	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },

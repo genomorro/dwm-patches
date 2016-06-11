@@ -1,15 +1,20 @@
-diff -r 62791cc97f88 config.def.h
---- a/config.def.h	Tue Jun 01 17:39:26 2010 +0100
-+++ b/config.def.h	Wed Jun 02 13:42:49 2010 +0100
-@@ -29,1 +29,2 @@
+--- a/config.def.h	2016-06-10 21:36:37.715188937 -0500
++++ b/config.def.h	2016-06-10 21:36:52.807189819 -0500
+@@ -51,11 +51,13 @@
+ static const int nmaster     = 1;    /* number of clients in master area */
+ static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+ 
 +#include "grid.c"
  static const Layout layouts[] = {
-@@ -34,3 +35,4 @@
+ 	/* symbol     arrange function */
+ 	{ "[]=",      tile },    /* first entry is default */
+ 	{ "><>",      NULL },    /* no layout function means floating behavior */
+ 	{ "[M]",      monocle },
 +	{ "HHH",      grid },
  };
  
  /* key definitions */
-@@ -66,6 +67,7 @@ static Key keys[] = {
+@@ -113,6 +115,7 @@
  	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -20,7 +25,7 @@ diff -r 62791cc97f88 config.def.h
 diff -r 62791cc97f88 grid.c
 --- /dev/null	Thu Jan 01 00:00:00 1970 +0000
 +++ b/grid.c	Wed Jun 02 13:42:49 2010 +0100
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,37 @@
 +void
 +grid(Monitor *m) {
 +	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
@@ -57,3 +62,4 @@ diff -r 62791cc97f88 grid.c
 +		}
 +	}
 +}
++
