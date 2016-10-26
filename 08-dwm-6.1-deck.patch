@@ -1,6 +1,6 @@
-diff -ruN dwm-07/config.def.h dwm-patching/config.def.h
---- dwm-07/config.def.h	2016-10-25 20:01:56.299177519 -0500
-+++ dwm-patching/config.def.h	2016-10-25 20:02:23.518175798 -0500
+diff -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2016-10-25 20:01:56.299177519 -0500
++++ b/config.def.h	2016-10-25 20:02:23.518175798 -0500
 @@ -53,12 +53,14 @@
  static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
  
@@ -25,8 +25,8 @@ diff -ruN dwm-07/config.def.h dwm-patching/config.def.h
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 diff -ruN dwm-07/deck.c dwm-patching/deck.c
---- dwm-07/deck.c	1969-12-31 18:00:00.000000000 -0600
-+++ dwm-patching/deck.c	2016-10-25 20:02:23.518175798 -0500
+--- a/deck.c	1969-12-31 18:00:00.000000000 -0600
++++ b/deck.c	2016-10-25 20:02:23.518175798 -0500
 @@ -0,0 +1,28 @@
 +void
 +deck(Monitor *m) {

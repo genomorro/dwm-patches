@@ -1,6 +1,6 @@
-diff -ruN dwm-08/bstack.c dwm-patching/bstack.c
---- dwm-08/bstack.c	1969-12-31 18:00:00.000000000 -0600
-+++ dwm-patching/bstack.c	2016-10-25 20:04:43.199166970 -0500
+diff -ruN a/bstack.c b/bstack.c
+--- a/bstack.c	1969-12-31 18:00:00.000000000 -0600
++++ b/bstack.c	2016-10-25 20:04:43.199166970 -0500
 @@ -0,0 +1,34 @@
 +static void
 +bstack(Monitor *m) {
@@ -36,9 +36,9 @@ diff -ruN dwm-08/bstack.c dwm-patching/bstack.c
 +	}
 +}
 +
-diff -ruN dwm-08/config.def.h dwm-patching/config.def.h
---- dwm-08/config.def.h	2016-10-25 20:03:39.648170987 -0500
-+++ dwm-patching/config.def.h	2016-10-25 20:04:43.198166970 -0500
+diff -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2016-10-25 20:03:39.648170987 -0500
++++ b/config.def.h	2016-10-25 20:04:43.198166970 -0500
 @@ -54,6 +54,7 @@
  
  #include "grid.c"

@@ -1,5 +1,6 @@
---- dwm-6.1/config.def.h	2016-10-25 17:07:00.627840878 -0500
-+++ dwm-patching/config.def.h	2016-10-25 18:01:00.796636089 -0500
+diff -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2016-10-25 23:53:27.079055613 -0500
++++ b/config.def.h	2016-10-25 23:56:25.292059600 -0500
 @@ -19,22 +19,34 @@
  };
  
@@ -50,7 +51,7 @@
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -58,18 +70,25 @@
+@@ -58,18 +70,26 @@
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
  static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
  static const char *termcmd[]  = { "st", NULL };
@@ -66,6 +67,7 @@
 +	{ MODKEY,                       XK_a,      spawn,          {.v = dwmenucmd } },
 +	{ 0,                            0x1008ff1b, spawn,         {.v = dfindercmd } },
 +	{ MODKEY,			XK_e,	   spawn,	   {.v = emacscmd } },
++	/* Reserved */
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -79,7 +81,7 @@
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-@@ -84,15 +103,10 @@
+@@ -84,15 +104,10 @@
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
