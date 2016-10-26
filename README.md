@@ -1,7 +1,8 @@
 DWM patches
 ===========
 
-* Patches for DWM 6.1
+Patches for DWM 6.1
+-------------------
 
 - Solarized color scheme
 - Systray
@@ -10,6 +11,7 @@ DWM patches
 - Grid, deck and bstack layouts
 - Popup Term 
 
-* Issues
-- Save floats doesn't work
+Issues
+------
+
 - You have to choice between one of the 05 patches
