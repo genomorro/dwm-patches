@@ -1,6 +1,7 @@
---- dwm-6.1_06/config.def.h	2016-06-10 21:41:31.506206117 -0500
-+++ dwm-6.1/config.def.h	2016-06-10 21:41:49.936207195 -0500
-@@ -52,12 +52,14 @@
+diff -ruN dwm-07/config.def.h dwm-patching/config.def.h
+--- dwm-07/config.def.h	2016-10-25 20:01:56.299177519 -0500
++++ dwm-patching/config.def.h	2016-10-25 20:02:23.518175798 -0500
+@@ -53,12 +53,14 @@
  static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
  
  #include "grid.c"
@@ -15,7 +16,7 @@
  };
  
  /* key definitions */
-@@ -116,6 +118,7 @@
+@@ -102,6 +104,7 @@
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
  	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
@@ -23,9 +24,9 @@
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-diff -r 62791cc97f88 deck.c
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/deck.c	Wed Jun 02 13:42:49 2010 +0100
+diff -ruN dwm-07/deck.c dwm-patching/deck.c
+--- dwm-07/deck.c	1969-12-31 18:00:00.000000000 -0600
++++ dwm-patching/deck.c	2016-10-25 20:02:23.518175798 -0500
 @@ -0,0 +1,28 @@
 +void
 +deck(Monitor *m) {

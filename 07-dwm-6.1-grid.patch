@@ -1,6 +1,7 @@
---- a/config.def.h	2016-06-10 21:36:37.715188937 -0500
-+++ b/config.def.h	2016-06-10 21:36:52.807189819 -0500
-@@ -51,11 +51,13 @@
+diff -ruN dwm-06/config.def.h dwm-patching/config.def.h
+--- dwm-06/config.def.h	2016-10-25 19:55:44.553201014 -0500
++++ dwm-patching/config.def.h	2016-10-25 19:59:32.589186602 -0500
+@@ -52,11 +52,13 @@
  static const int nmaster     = 1;    /* number of clients in master area */
  static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
  
@@ -14,7 +15,7 @@
  };
  
  /* key definitions */
-@@ -113,6 +115,7 @@
+@@ -99,6 +101,7 @@
  	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -22,9 +23,9 @@
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-diff -r 62791cc97f88 grid.c
---- /dev/null	Thu Jan 01 00:00:00 1970 +0000
-+++ b/grid.c	Wed Jun 02 13:42:49 2010 +0100
+diff -ruN dwm-06/grid.c dwm-patching/grid.c
+--- dwm-06/grid.c	1969-12-31 18:00:00.000000000 -0600
++++ dwm-patching/grid.c	2016-10-25 19:59:32.589186602 -0500
 @@ -0,0 +1,37 @@
 +void
 +grid(Monitor *m) {

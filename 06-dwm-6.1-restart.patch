@@ -1,20 +1,26 @@
-Author: unknown
-URL: no URL yet
-Add functionality to restart dwm.
-
-Index: dwm/dwm.c
-===================================================================
---- a/dwm.c
-+++ b/dwm.c
-@@ -262,6 +262,7 @@ static void (*handler[LASTEvent]) (XEven
+diff -ruN dwm-05/config.def.h dwm-patching/config.def.h
+--- dwm-05/config.def.h	2016-10-25 19:42:16.337252096 -0500
++++ dwm-patching/config.def.h	2016-10-25 19:51:48.024215964 -0500
+@@ -111,6 +111,7 @@
+ 	TAGKEYS(                        XK_1,                      1)
+ 	TAGKEYS(                        XK_2,                      2)
+ 	TAGKEYS(                        XK_3,                      3)
++	{ MODKEY,                       XK_q,      quit,           {1} },
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
  };
- static Atom wmatom[WMLast], netatom[NetLast];
+ 
+diff -ruN dwm-05/dwm.c dwm-patching/dwm.c
+--- dwm-05/dwm.c	2016-10-25 19:49:31.465224594 -0500
++++ dwm-patching/dwm.c	2016-10-25 19:50:36.448220487 -0500
+@@ -301,6 +301,7 @@
+ };
+ static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
  static int running = 1;
 +static int restart = 0;
  static Cur *cursor[CurLast];
  static Scm scheme[SchemeLast];
  static Display *dpy;
-@@ -1268,6 +1269,8 @@ propertynotify(XEvent *e)
+@@ -1439,6 +1440,8 @@
  void
  quit(const Arg *arg)
  {
@@ -23,7 +29,7 @@ Index: dwm/dwm.c
  	running = 0;
  }
  
-@@ -2134,6 +2137,8 @@ main(int argc, char *argv[])
+@@ -2575,6 +2578,8 @@
  	setup();
  	scan();
  	run();

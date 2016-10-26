@@ -1,13 +1,6 @@
-URL: http://dwm.suckless.org/patches/historical/save_floats
-This patch saves size and position of every floating window before it is forced
-into tiled mode. If the window is made floating again, the old dimensions will
-be restored.
-
-Index: dwm/dwm.c
-===================================================================
---- dwm/dwm.c.orig
-+++ dwm/dwm.c
-@@ -89,6 +89,7 @@ struct Client {
+--- dwm-04/dwm.c	2016-10-25 19:47:36.161231882 -0500
++++ dwm-patching/dwm.c	2016-10-25 19:46:37.218235607 -0500
+@@ -107,6 +107,7 @@
  	char name[256];
  	float mina, maxa;
  	int x, y, w, h;
@@ -15,7 +8,7 @@ Index: dwm/dwm.c
  	int oldx, oldy, oldw, oldh;
  	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
  	int bw, oldbw;
-@@ -1073,6 +1074,10 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1223,6 +1224,10 @@
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -26,7 +19,7 @@ Index: dwm/dwm.c
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
  	grabbuttons(c, 0);
  	if (!c->isfloating)
-@@ -1706,8 +1711,16 @@ togglefloating(const Arg *arg)
+@@ -1940,8 +1945,16 @@
  		return;
  	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
  	if (selmon->sel->isfloating)
