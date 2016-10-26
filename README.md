@@ -12,3 +12,4 @@ DWM patches
 
 * Issues
 - Save floats doesn't work
+- You have to choice between one of the 05 patches
