@@ -1,13 +1,15 @@
 DWM patches
 ===========
 
-* Official patches for DWM 6.0
+* Patches for DWM 6.1
 
-- Zenburn color scheme
-- No border with single window
+- Solarized color scheme
 - Systray
-- Save position of float windows
 - Pertag
 - Restart with MODKEY+q
-- Columns provides for vertical windows in master area
-- Deck and Bstack layouts
+- Grid, deck and bstack layouts
+- Popup Term 
+
+* Issues
+- Save floats doesn't work
+- You have to choice between one of the 05 patches

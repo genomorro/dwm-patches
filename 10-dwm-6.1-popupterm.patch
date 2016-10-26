@@ -1,0 +1,101 @@
+diff -ruN dwm-09/config.def.h dwm-patching/config.def.h
+--- dwm-09/config.def.h	2016-10-25 20:06:30.425160193 -0500
++++ dwm-patching/config.def.h	2016-10-25 20:12:42.890136652 -0500
+@@ -51,6 +51,7 @@
+ static const float mfact     = 0.618; /* factor of master area size [0.05..0.95] */
+ static const int nmaster     = 1;    /* number of clients in master area */
+ static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
++static const float popuptermmfact = 0.15; /* factor of master area size for pop-up terminal height [0.05..0.95] */
+ 
+ #include "grid.c"
+ #include "deck.c"
+@@ -84,6 +85,8 @@
+ static const char *dwmenucmd[] = { "dwmenu", NULL };
+ static const char *emacscmd[] = { "emacsclient", "-a=", "-c", NULL };
+ /* Reserved */
++static const char popuptermname[] = "pop-up";
++static const char *popuptermcmd[] = { "st", "-t", popuptermname, NULL };
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+@@ -92,6 +95,7 @@
+ 	{ 0,                            0x1008ff1b, spawn,         {.v = dfindercmd } },
+ 	{ MODKEY,			XK_e,	   spawn,	   {.v = emacscmd } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++	{ MODKEY,                       XK_p,	   togglepopup,    {.v = popuptermcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+ 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+diff -ruN dwm-09/dwm.c dwm-patching/dwm.c
+--- dwm-09/dwm.c	2016-10-25 19:55:44.553201014 -0500
++++ dwm-patching/dwm.c	2016-10-25 20:07:18.797157136 -0500
+@@ -271,6 +271,7 @@
+ static int xerrordummy(Display *dpy, XErrorEvent *ee);
+ static int xerrorstart(Display *dpy, XErrorEvent *ee);
+ static void zoom(const Arg *arg);
++static void togglepopup(const Arg *arg);
+ 
+ /* variables */
+ static Systray *systray = NULL;
+@@ -311,6 +312,7 @@
+ 
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
++static unsigned int popuptag = 1 << LENGTH(tags);
+ 
+ struct Pertag {
+ 	unsigned int curtag, prevtag; /* current and previous tag */
+@@ -394,7 +396,7 @@
+ 		*h = bh;
+ 	if (*w < bh)
+ 		*w = bh;
+-	if (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange) {
++	if(strcmp(c->name, popuptermname) && (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange)) {
+ 		/* see last two sentences in ICCCM 4.1.2.3 */
+ 		baseismin = c->basew == c->minw && c->baseh == c->minh;
+ 		if (!baseismin) { /* temporarily remove base dimensions */
+@@ -1218,6 +1220,15 @@
+ 	           && (c->x + (c->w / 2) < c->mon->wx + c->mon->ww)) ? bh : c->mon->my);
+ 	c->bw = borderpx;
+ 
++	if(!strcmp(c->name, popuptermname)) {
++	    c->mon->tagset[c->mon->seltags] |= c->tags = popuptag;
++	    c->isfloating = True;
++	    c->h = c->mon->wh * popuptermmfact;
++		resize(c, c->mon->wx, c->mon->wy + c->mon->wh - c->h, c->mon->ww - 2 * c->bw, c->h - 2 * c->bw, False);
++	}
++	else
++	    c->tags &= TAGMASK;
++
+ 	wc.border_width = c->bw;
+ 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
+ 	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
+@@ -2563,6 +2574,28 @@
+ 	pop(c);
+ }
+ 
++void
++togglepopup(const Arg *arg) {
++	Client *c = NULL;
++	unsigned int found = 0;
++
++	for(c = selmon->clients; c && !(found = c->tags & popuptag); c = c->next);
++	if(found) {
++	    unsigned int newtagset = selmon->tagset[selmon->seltags] ^ popuptag;
++	    if(newtagset) {
++	        selmon->tagset[selmon->seltags] = newtagset;
++	        focus(NULL);
++	        arrange(selmon);
++	    }
++	    if(ISVISIBLE(c)) {
++	        focus(c);
++	        restack(selmon);
++	    }
++	}
++	else
++	    spawn(arg);
++}
++
+ int
+ main(int argc, char *argv[])
+ {
