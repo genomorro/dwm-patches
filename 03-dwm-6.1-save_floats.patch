@@ -1,6 +1,7 @@
---- a/dwm.c	2016-10-25 19:47:36.161231882 -0500
-+++ b/dwm.c	2016-10-25 19:46:37.218235607 -0500
-@@ -107,6 +107,7 @@
+diff '--exclude=.git' -ruN a/dwm.c b/dwm.c
+--- a/dwm.c	2018-06-28 14:17:23.561829299 -0500
++++ b/dwm.c	2018-06-28 14:34:22.743772925 -0500
+@@ -106,6 +106,7 @@
  	char name[256];
  	float mina, maxa;
  	int x, y, w, h;
@@ -8,7 +9,7 @@
  	int oldx, oldy, oldw, oldh;
  	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
  	int bw, oldbw;
-@@ -1223,6 +1224,10 @@
+@@ -1195,6 +1196,10 @@
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -19,12 +20,12 @@
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
  	grabbuttons(c, 0);
  	if (!c->isfloating)
-@@ -1940,8 +1945,16 @@
+@@ -1933,8 +1938,16 @@
  		return;
  	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
  	if (selmon->sel->isfloating)
 -		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
--		       selmon->sel->w, selmon->sel->h, 0);
+-			selmon->sel->w, selmon->sel->h, 0);
 +		/*restore last known float dimensions*/
 +		resize(selmon->sel, selmon->sel->sfx, selmon->sel->sfy,
 +		       selmon->sel->sfw, selmon->sel->sfh, 0);

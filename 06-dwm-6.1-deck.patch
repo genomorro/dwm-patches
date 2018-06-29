@@ -1,8 +1,8 @@
-diff -ruN a/config.def.h b/config.def.h
---- a/config.def.h	2016-10-25 20:01:56.299177519 -0500
-+++ b/config.def.h	2016-10-25 20:02:23.518175798 -0500
-@@ -53,12 +53,14 @@
- static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+diff '--exclude=.git' -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2018-06-28 14:49:07.284723998 -0500
++++ b/config.def.h	2018-06-28 14:57:52.645694939 -0500
+@@ -41,12 +41,14 @@
+ static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
  
  #include "grid.c"
 +#include "deck.c"
@@ -16,7 +16,7 @@ diff -ruN a/config.def.h b/config.def.h
  };
  
  /* key definitions */
-@@ -102,6 +104,7 @@
+@@ -83,6 +85,7 @@
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
  	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
@@ -24,10 +24,10 @@ diff -ruN a/config.def.h b/config.def.h
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-diff -ruN dwm-07/deck.c dwm-patching/deck.c
+diff '--exclude=.git' -ruN a/deck.c b/deck.c
 --- a/deck.c	1969-12-31 18:00:00.000000000 -0600
-+++ b/deck.c	2016-10-25 20:02:23.518175798 -0500
-@@ -0,0 +1,28 @@
++++ b/deck.c	2018-06-28 14:57:04.864697581 -0500
+@@ -0,0 +1,27 @@
 +void
 +deck(Monitor *m) {
 +	int dn;
@@ -55,4 +55,3 @@ diff -ruN dwm-07/deck.c dwm-patching/deck.c
 +		else
 +			resize(c, m->wx + mw, m->wy, m->ww - mw - (2*c->bw), m->wh - (2*c->bw), False);
 +}
-+

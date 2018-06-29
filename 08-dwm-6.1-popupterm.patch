@@ -1,51 +1,50 @@
-diff -ruN a/config.def.h b/config.def.h
---- a/config.def.h	2016-10-25 20:06:30.425160193 -0500
-+++ b/config.def.h	2016-10-25 20:12:42.890136652 -0500
-@@ -51,6 +51,7 @@
- static const float mfact     = 0.618; /* factor of master area size [0.05..0.95] */
+diff '--exclude=.git' -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2018-06-28 15:05:30.712669601 -0500
++++ b/config.def.h	2018-06-28 15:08:02.346661214 -0500
+@@ -39,6 +39,7 @@
+ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
  static const int nmaster     = 1;    /* number of clients in master area */
- static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+ static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 +static const float popuptermmfact = 0.15; /* factor of master area size for pop-up terminal height [0.05..0.95] */
  
  #include "grid.c"
  #include "deck.c"
-@@ -84,6 +85,8 @@
- static const char *dwmenucmd[] = { "dwmenu", NULL };
- static const char *emacscmd[] = { "emacsclient", "-a=", "-c", NULL };
- /* Reserved */
+@@ -68,11 +69,14 @@
+ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+ static const char *termcmd[]  = { "st", NULL };
 +static const char popuptermname[] = "pop-up";
 +static const char *popuptermcmd[] = { "st", "-t", popuptermname, NULL };
  
  static Key keys[] = {
  	/* modifier                     key        function        argument */
-@@ -92,6 +95,7 @@
- 	{ 0,                            0x1008ff1b, spawn,         {.v = dfindercmd } },
- 	{ MODKEY,			XK_e,	   spawn,	   {.v = emacscmd } },
+ 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 +	{ MODKEY,                       XK_p,	   togglepopup,    {.v = popuptermcmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-diff -ruN a/dwm.c b/dwm.c
---- a/dwm.c	2016-10-25 19:55:44.553201014 -0500
-+++ b/dwm.c	2016-10-25 20:07:18.797157136 -0500
-@@ -271,6 +271,7 @@
+diff '--exclude=.git' -ruN a/dwm.c b/dwm.c
+--- a/dwm.c	2018-06-28 14:42:51.900744762 -0500
++++ b/dwm.c	2018-06-28 15:13:24.895643373 -0500
+@@ -270,6 +270,7 @@
  static int xerrordummy(Display *dpy, XErrorEvent *ee);
  static int xerrorstart(Display *dpy, XErrorEvent *ee);
  static void zoom(const Arg *arg);
 +static void togglepopup(const Arg *arg);
  
  /* variables */
- static Systray *systray = NULL;
-@@ -311,6 +312,7 @@
- 
+ static Systray *systray =  NULL;
+@@ -311,6 +312,8 @@
  /* configuration, allows nested code to access above variables */
  #include "config.h"
-+static unsigned int popuptag = 1 << LENGTH(tags);
  
++static unsigned int popuptag = 1 << LENGTH(tags);
++
  struct Pertag {
  	unsigned int curtag, prevtag; /* current and previous tag */
-@@ -394,7 +396,7 @@
+ 	int nmasters[LENGTH(tags) + 1]; /* number of windows in master area */
+@@ -392,7 +395,7 @@
  		*h = bh;
  	if (*w < bh)
  		*w = bh;
@@ -54,8 +53,8 @@ diff -ruN a/dwm.c b/dwm.c
  		/* see last two sentences in ICCCM 4.1.2.3 */
  		baseismin = c->basew == c->minw && c->baseh == c->minh;
  		if (!baseismin) { /* temporarily remove base dimensions */
-@@ -1218,6 +1220,15 @@
- 	           && (c->x + (c->w / 2) < c->mon->wx + c->mon->ww)) ? bh : c->mon->my);
+@@ -1190,6 +1193,15 @@
+ 		&& (c->x + (c->w / 2) < c->mon->wx + c->mon->ww)) ? bh : c->mon->my);
  	c->bw = borderpx;
  
 +	if(!strcmp(c->name, popuptermname)) {
@@ -70,11 +69,10 @@ diff -ruN a/dwm.c b/dwm.c
  	wc.border_width = c->bw;
  	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
  	XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
-@@ -2563,6 +2574,28 @@
- 	pop(c);
+@@ -1955,6 +1967,28 @@
  }
  
-+void
+ void
 +togglepopup(const Arg *arg) {
 +	Client *c = NULL;
 +	unsigned int found = 0;
@@ -96,6 +94,7 @@ diff -ruN a/dwm.c b/dwm.c
 +	    spawn(arg);
 +}
 +
- int
- main(int argc, char *argv[])
++void
+ toggletag(const Arg *arg)
  {
+ 	unsigned int newtags;

@@ -1,9 +1,9 @@
-diff -ruN a/config.def.h b/config.def.h
---- a/config.def.h	2016-10-25 19:55:44.553201014 -0500
-+++ b/config.def.h	2016-10-25 19:59:32.589186602 -0500
-@@ -52,11 +52,13 @@
+diff '--exclude=.git' -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2018-06-28 14:42:51.900744762 -0500
++++ b/config.def.h	2018-06-28 14:45:37.413735607 -0500
+@@ -40,11 +40,13 @@
  static const int nmaster     = 1;    /* number of clients in master area */
- static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+ static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
  
 +#include "grid.c"
  static const Layout layouts[] = {
@@ -15,7 +15,7 @@ diff -ruN a/config.def.h b/config.def.h
  };
  
  /* key definitions */
-@@ -99,6 +101,7 @@
+@@ -80,6 +82,7 @@
  	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
  	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -23,10 +23,10 @@ diff -ruN a/config.def.h b/config.def.h
  	{ MODKEY,                       XK_space,  setlayout,      {0} },
  	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-diff -ruN a/grid.c b/grid.c
+diff '--exclude=.git' -ruN a/grid.c b/grid.c
 --- a/grid.c	1969-12-31 18:00:00.000000000 -0600
-+++ b/grid.c	2016-10-25 19:59:32.589186602 -0500
-@@ -0,0 +1,37 @@
++++ b/grid.c	2018-06-28 14:46:20.676733214 -0500
+@@ -0,0 +1,36 @@
 +void
 +grid(Monitor *m) {
 +	unsigned int n, cols, rows, cn, rn, i, cx, cy, cw, ch;
@@ -63,4 +63,3 @@ diff -ruN a/grid.c b/grid.c
 +		}
 +	}
 +}
-+
