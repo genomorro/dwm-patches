@@ -1,0 +1,64 @@
+diff '--exclude=.git' -ruN a/bstack.c b/bstack.c
+--- a/bstack.c	1969-12-31 18:00:00.000000000 -0600
++++ b/bstack.c	2018-06-28 15:03:48.906675233 -0500
+@@ -0,0 +1,33 @@
++static void
++bstack(Monitor *m) {
++	int w, h, mh, mx, tx, ty, tw;
++	unsigned int i, n;
++	Client *c;
++
++	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	if(n == 0)
++		return;
++	if(n > m->nmaster) {
++		mh = m->nmaster ? m->mfact * m->wh : 0;
++		tw = m->ww / (n - m->nmaster);
++		ty = m->wy + mh;
++	} 
++	else {
++		mh = m->wh;
++		tw = m->ww;
++		ty = m->wy;
++	}
++	for(i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
++		if(i < m->nmaster) {
++			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
++			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), False);
++			mx += WIDTH(c);
++		} 
++		else {
++			h = m->wh - mh;
++			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), False);
++			if(tw != m->ww)
++				tx += WIDTH(c);
++		}
++	}
++}
+diff '--exclude=.git' -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2018-06-28 14:59:26.717689735 -0500
++++ b/config.def.h	2018-06-28 15:03:04.152677708 -0500
+@@ -42,6 +42,7 @@
+ 
+ #include "grid.c"
+ #include "deck.c"
++#include "bstack.c"
+ static const Layout layouts[] = {
+ 	/* symbol     arrange function */
+ 	{ "[]=",      tile },    /* first entry is default */
+@@ -49,6 +50,7 @@
+ 	{ "[M]",      monocle },
+ 	{ "HHH",      grid },
+ 	{ "[]|",      deck },
++	{ "TTT",      bstack },
+ };
+ 
+ /* key definitions */
+@@ -86,6 +88,7 @@
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+ 	{ MODKEY,                       XK_g,      setlayout,      {.v = &layouts[3]} },
+ 	{ MODKEY,                       XK_l,      setlayout,      {.v = &layouts[4]} },
++	{ MODKEY,                       XK_s,      setlayout,      {.v = &layouts[5]} },
+ 	{ MODKEY,                       XK_space,  setlayout,      {0} },
+ 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+ 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
