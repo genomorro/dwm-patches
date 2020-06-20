@@ -1,0 +1,107 @@
+diff -u a/config.def.h b/config.def.h
+--- a/config.def.h	2020-06-19 18:48:48.923103615 -0500
++++ b/config.def.h	2020-06-19 19:25:57.735562486 -0500
+@@ -1,7 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ 
+ /* appearance */
+-static const unsigned int borderpx  = 1;        /* border pixel of windows */
++static const unsigned int borderpx  = 3;        /* border pixel of windows */
+ static const unsigned int snap      = 32;       /* snap pixel */
+ static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
+ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+@@ -36,17 +36,29 @@
+ 	 *	WM_CLASS(STRING) = instance, class
+ 	 *	WM_NAME(STRING) = title
+ 	 */
+-	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+-	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+-	{ "Firefox", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+-	{ "st",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
+-	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
++	/* class         instance       title           tags mask   isfloating   isterminal noswallow monitor */
++        { "Animate",     "animate",     NULL,           0,          True,         0,         0,       -1 },
++	{ "Display",     NULL,          NULL,           0,          True,         0,         0,       -1 },
++	{ "ffplay",      "ffplay",      NULL,           0,          True,         0,         0,       -1 },
++	{ "Xmessage",    NULL,          NULL,           0,          True,         0,         0,       -1 },
++	{ "mpv",         NULL,          NULL,           0,          False,        0,         0,       -1 },
++	{ "float",       "passmenu",    "float",        0,          True,         0,         0,       -1 },
++	{ "Emacs",       "emacs",       NULL,           1,          False,        0,         1,       -1 },
++	{ NULL,          "qutebrowser", NULL,           1 << 1,     False,        0,         0,       -1 },
++	{ "Conkeror",    "Navigator",   NULL,           1 << 1,     False,        0,         0,       -1 },
++	{ "st-256color", "st-256color", NULL,           1 << 2,     False,        1,        -1,       -1 },	
++	{ "Soffice",     "libreoffice", NULL,           1 << 3,     True,         0,         0,       -1 },
++	{ NULL,          "libreoffice", NULL,           1 << 3,     False,        0,         0,       -1 },
++	{ "calibre",     "calibre-gui", NULL,           1 << 3,     False,        0,         0,       -1 },
++	{ "Kid3",        "kid3-qt",     NULL,           1 << 4,     False,        0,         0,       -1 },
++	{ NULL,          "photoflare",  "Photoflare",   1 << 4,     False,        0,         0,       -1 },
++	{ NULL,          NULL,          "Event Tester", 0,          True,         0,         1,       -1 }, /* xev */
+ };
+ 
+ /* layout(s) */
+-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
++static const float mfact     = 0.618;/* factor of master area size [0.05..0.95] */
+ static const int nmaster     = 1;    /* number of clients in master area */
+-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
++static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+ static const float popuptermmfact = 0.15; /* factor of master area size for pop-up terminal height [0.05..0.95] */
+ 
+ #include "grid.c"
+@@ -63,7 +75,7 @@
+ };
+ 
+ /* key definitions */
+-#define MODKEY Mod1Mask
++#define MODKEY Mod4Mask
+ #define TAGKEYS(KEY,TAG) \
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+@@ -75,14 +87,24 @@
+ 
+ /* commands */
+ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
++static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", s_base03, "-nf", s_base0, "-sb", s_base02, "-sf", s_base1, NULL };
+ static const char *termcmd[]  = { "st", NULL };
++static const char *dfindercmd[] = { "dfinder", NULL };
++static const char *dwmenucmd[] = { "dwmenu", NULL };
++static const char *emacscmd[] = { "emacsclient", "-a=", "-c", NULL };
++static const char *printscrn[]= { "screenshot", "-m", "root", "-f", "desktop", NULL };
++static const char *printwin[] = { "screenshot", "-m", "window", "-f", "window", NULL };
+ static const char popuptermname[] = "pop-up";
+ static const char *popuptermcmd[] = { "st", "-t", popuptermname, NULL };
+ 
+ static Key keys[] = {
+ 	/* modifier                     key        function        argument */
+-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
++	{ MODKEY,                       XK_x,      spawn,          {.v = dmenucmd } },
++	{ MODKEY,                       XK_a,      spawn,          {.v = dwmenucmd } },
++	{ 0,                            0x1008ff1b, spawn,         {.v = dfindercmd } },
++	{ MODKEY,			XK_e,	   spawn,	   {.v = emacscmd } },
++	{ 0,				XK_Print,  spawn,	   {.v = printscrn } },
++	{ Mod1Mask,			XK_Print,  spawn,	   {.v = printwin } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+ 	{ MODKEY,                       XK_p,	   togglepopup,    {.v = popuptermcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+@@ -90,8 +112,8 @@
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+ 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+ 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
++	{ MODKEY|ShiftMask,             XK_j,      setmfact,       {.f = -0.05} },
++	{ MODKEY|ShiftMask,             XK_k,      setmfact,       {.f = +0.05} },
+ 	{ MODKEY,                       XK_Return, zoom,           {0} },
+ 	{ MODKEY,                       XK_Tab,    view,           {0} },
+ 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+@@ -109,8 +131,8 @@
+ 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+ 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+ 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+-	{ MODKEY|ShiftMask,             XK_t,      schemeToggle,   {0} },
+-	{ MODKEY|ShiftMask,             XK_z,      schemeCycle,    {0} },
++	{ MODKEY,                       XK_F6,     schemeToggle,   {0} },
++	{ MODKEY|ShiftMask,             XK_F6,     schemeCycle,    {0} },
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
