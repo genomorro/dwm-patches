@@ -1,6 +1,6 @@
-diff -u a/config.def.h b/config.def.h
---- a/config.def.h	2020-06-19 18:48:48.923103615 -0500
-+++ b/config.def.h	2020-06-19 19:25:57.735562486 -0500
+diff -ruN a/config.def.h b/config.def.h
+--- a/config.def.h	2021-04-04 12:01:16.037212500 -0500
++++ b/config.def.h	2021-04-04 12:13:18.913916108 -0500
 @@ -1,7 +1,7 @@
  /* See LICENSE file for copyright and license details. */
  
@@ -10,7 +10,7 @@ diff -u a/config.def.h b/config.def.h
  static const unsigned int snap      = 32;       /* snap pixel */
  static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
  static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-@@ -36,17 +36,29 @@
+@@ -36,18 +36,30 @@
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
@@ -39,15 +39,16 @@ diff -u a/config.def.h b/config.def.h
  };
  
  /* layout(s) */
+ #include "movestack.c"
 -static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-+static const float mfact     = 0.618;/* factor of master area size [0.05..0.95] */
++static const float mfact     = 0.618; /* factor of master area size [0.05..0.95] */
  static const int nmaster     = 1;    /* number of clients in master area */
 -static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 +static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
  static const float popuptermmfact = 0.15; /* factor of master area size for pop-up terminal height [0.05..0.95] */
  
  #include "grid.c"
-@@ -63,7 +75,7 @@
+@@ -64,7 +76,7 @@
  };
  
  /* key definitions */
@@ -56,7 +57,7 @@ diff -u a/config.def.h b/config.def.h
  #define TAGKEYS(KEY,TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-@@ -75,14 +87,24 @@
+@@ -76,14 +88,24 @@
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -83,18 +84,22 @@ diff -u a/config.def.h b/config.def.h
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
  	{ MODKEY,                       XK_p,	   togglepopup,    {.v = popuptermcmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
-@@ -90,8 +112,8 @@
+@@ -91,10 +113,10 @@
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
  	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
  	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
 -	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 -	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+-	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+-	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 +	{ MODKEY|ShiftMask,             XK_j,      setmfact,       {.f = -0.05} },
 +	{ MODKEY|ShiftMask,             XK_k,      setmfact,       {.f = +0.05} },
++	{ MODKEY|ControlMask,           XK_j,      movestack,      {.i = +1 } },
++	{ MODKEY|ControlMask,           XK_k,      movestack,      {.i = -1 } },
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
  	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-@@ -109,8 +131,8 @@
+@@ -112,8 +134,8 @@
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
